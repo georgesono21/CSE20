@@ -15,6 +15,7 @@ def load_contact_list(doccument):
   #initilizing the dictionary for contacts
   contacts = dict()
   with open (doccument,"r") as contactlist:
+
     for contactinfo in contactlist:
       #get rid of punctuation
       contactdict = dict()
@@ -29,6 +30,7 @@ def load_contact_list(doccument):
       #add dictionary to the contact dictionary
       contacts[contactinfo[0]] = contactdict
       #the key name for contacts would be the zeroth index of contact info cause the first index (0) is the name
+
   return contacts
 
 #helper functions
@@ -59,8 +61,8 @@ def get_address(contacts,name):
 def get_email_list(contacts,listofnames):
   try:
     #we make the wrong names and emails sets on purpose, so this is so there are no duplicates
-    wrongnames = set()
-    setofnums = set()
+    wrongnames = []
+    setofnums = []
     finalnames = []
     for contact in contacts.keys():
       finalnames.append(contact)
@@ -69,17 +71,18 @@ def get_email_list(contacts,listofnames):
     for eachname in listofnames:
       if finalnames.count(eachname) > 0:
         #if the listofnames is in keys, then we add it to the set of emails
-        setofnums.add((contacts[eachname]["email"]))
+        setofnums.append(contacts[eachname]["email"])
       else:
         #otherwise we add it to the wrong names set
-        wrongnames.add(eachname)
-    wrongnames = ", ".join(list(wrongnames))
+        wrongnames.append(eachname)
+    wrongnames = ", ".join(wrongnames)
     #for syntax purposes we make the wrongnames a list and then make it a string
-    output = f"{list(setofnums)}\nNames not found: {wrongnames}"
+    output = setofnums
     if len(wrongnames) == 0:
-      output = f"{list(setofnums)}"
       return output
-    return output
+    else:
+      print(f"ERROR: Names not found: {wrongnames}")
+      return output
   except KeyError:
     print(f"Error: {eachname} were not found in contacts")
     #throw an error code if the name is not valid
@@ -88,9 +91,9 @@ def get_email_list(contacts,listofnames):
 def get_phone_list(contacts,listofnames):
   try:
     #we make the wrong names and phonenums sets on purpose, so this is so there are no duplicates
-    setofnums = set()
+    setofnums = []
     finalnames = []
-    wrongnames = set()
+    wrongnames = []
     
     for contact in contacts.keys():
       finalnames.append(contact)
@@ -98,16 +101,17 @@ def get_phone_list(contacts,listofnames):
     for eachname in listofnames:
       #if the listofnames is in keys, then we add it to the setofnums
       if finalnames.count(eachname) > 0:
-        setofnums.add((contacts[eachname]["phone"]))
+        setofnums.append(contacts[eachname]["phone"])
       else:
         #otherwise we add it to the wrongnums set 
-        wrongnames.add(eachname)
+        wrongnames.append(eachname)
     wrongnames = ", ".join(list(wrongnames))
     #for syntax purposes we make the wrongnums a list and then make it a string
-
-    output = f"{list(setofnums)}\nNames not found: {wrongnames}"
+    output = setofnums
     if len(wrongnames) == 0:
-      output = f"{list(setofnums)}"
+      return output
+    else:
+      print(f"ERROR: Names not found: {wrongnames}")
       return output
 
     return output
@@ -117,9 +121,9 @@ def get_phone_list(contacts,listofnames):
 def get_address_list(contacts,listofnames):
   try:
     #we make the wrong names and addresses sets on purpose, so this is so there are no duplicates
-    setofnums = set()
+    setofnums = []
     finalnames = []
-    wrongnames = set()
+    wrongnames = []
     
     for contact in contacts.keys():
       finalnames.append(contact)
@@ -127,17 +131,18 @@ def get_address_list(contacts,listofnames):
     for eachname in listofnames:
       if finalnames.count(eachname) > 0:
         #if the listofnames is in keys, then we add it to the setofnums
-        setofnums.add((contacts[eachname]["address"]))
+        setofnums.append(contacts[eachname]["address"])
       else:
         #otherwise we add it to the wrong addresses set
-        wrongnames.add(eachname)
+        wrongnames.append(eachname)
     wrongnames = ", ".join(list(wrongnames))
     #for syntax purposes we make the wrongaddresses  a list and then make it a string
-    output = f"{list(setofnums)}\nNames not found: {wrongnames}"
+    output = setofnums
     if len(wrongnames) == 0:
-      output = f"{list(setofnums)}"
       return output
-    return output
+    else:
+      print(f"ERROR: Names not found: {wrongnames}")
+      return output
 
 
   except KeyError:
@@ -150,7 +155,7 @@ def main():
   contacts = load_contact_list("sample_contact_list.txt")
   print("TEST CASES")
   name = "Sandy Cheeks"
-  names = ["Sandy Cheeks","Avatar Aang","Ariana Grande"]
+  names = ["Finn and Jake", "Lee Chae-lin", "Avatar Aang", "Perry Platypus"]
   print(f"\nTEST NAME: {name}")
   print(contacts["Sandy Cheeks"])
   print(f"Output: {get_email(contacts,name)}")
